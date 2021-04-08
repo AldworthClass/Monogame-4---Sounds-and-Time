@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using System;
 
 namespace Monogame_4___Sounds_and_Time
 {
@@ -13,6 +14,9 @@ namespace Monogame_4___Sounds_and_Time
         
         Texture2D bombTexture;
         Rectangle bombRect;
+
+        float seconds;
+        float startTime;
 
         public Game1()
         {
@@ -30,6 +34,7 @@ namespace Monogame_4___Sounds_and_Time
         {
             // TODO: Add your initialization logic here
             bombRect = new Rectangle(50, 50, 700, 400);
+            startTime = 0;
             base.Initialize();
         }
 
@@ -47,7 +52,12 @@ namespace Monogame_4___Sounds_and_Time
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
 
-            // TODO: Add your update logic here
+            seconds = (float)gameTime.TotalGameTime.TotalSeconds - startTime;
+
+            if (seconds >= 10)
+                startTime = (float)gameTime.TotalGameTime.TotalSeconds;
+
+            
 
             base.Update(gameTime);
         }
@@ -60,7 +70,7 @@ namespace Monogame_4___Sounds_and_Time
             _spriteBatch.Begin();
 
             _spriteBatch.Draw(bombTexture, bombRect, Color.White);
-            _spriteBatch.DrawString(timeFont, "1:00", new Vector2(270, 200), Color.Black);
+            _spriteBatch.DrawString(timeFont, seconds.ToString("00.0"), new Vector2(270, 200), Color.Black);
             _spriteBatch.End();
 
             base.Draw(gameTime);
