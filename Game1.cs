@@ -60,6 +60,7 @@ namespace Monogame_4___Sounds_and_Time
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
 
+            // Calculates elapsed time since the last timestamp
             seconds = (float)gameTime.TotalGameTime.TotalSeconds - startTime;
 
             // Resets bomb timer when the left mouse button is clicked
@@ -70,7 +71,7 @@ namespace Monogame_4___Sounds_and_Time
             if (seconds >= 10)
             {
                 explode.Play();
-                startTime = (float)gameTime.TotalGameTime.TotalSeconds;
+                startTime = (float)gameTime.TotalGameTime.TotalSeconds; // Resets the timer
             }
                 
                         base.Update(gameTime);
@@ -86,6 +87,7 @@ namespace Monogame_4___Sounds_and_Time
             _spriteBatch.Draw(bombTexture, bombRect, Color.White);
             // (10 - seconds) will display the timer as counting down from 10
             _spriteBatch.DrawString(timeFont, (10 - seconds).ToString("00.0"), new Vector2(270, 200), Color.Black); 
+            
             _spriteBatch.End();
 
             base.Draw(gameTime);
