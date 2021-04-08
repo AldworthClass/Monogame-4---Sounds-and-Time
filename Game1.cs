@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using System;
@@ -10,10 +11,14 @@ namespace Monogame_4___Sounds_and_Time
         private GraphicsDeviceManager _graphics;
         private SpriteBatch _spriteBatch;
 
+        MouseState mouseState;
+
         SpriteFont timeFont;
         
         Texture2D bombTexture;
         Rectangle bombRect;
+
+        SoundEffect explode;
 
         float seconds;
         float startTime;
@@ -45,21 +50,30 @@ namespace Monogame_4___Sounds_and_Time
             // TODO: use this.Content to load your game content here
             bombTexture = Content.Load<Texture2D>("bomb");
             timeFont = Content.Load<SpriteFont>("Time");
+            explode = Content.Load<SoundEffect>("explosion");
         }
 
         protected override void Update(GameTime gameTime)
         {
+            mouseState = Mouse.GetState();
+
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
 
             seconds = (float)gameTime.TotalGameTime.TotalSeconds - startTime;
 
-            if (seconds >= 10)
+            // Resets bomb timer when the left mouse button is clicked
+            if (mouseState.LeftButton == ButtonState.Pressed) // Takes a timestamp every 10 seconds.  You 
                 startTime = (float)gameTime.TotalGameTime.TotalSeconds;
 
-            
-
-            base.Update(gameTime);
+            // Plays explosion if bomb has not been reset before 10 seconds is up
+            if (seconds >= 10)
+            {
+                explode.Play();
+                startTime = (float)gameTime.TotalGameTime.TotalSeconds;
+            }
+                
+                        base.Update(gameTime);
         }
 
         protected override void Draw(GameTime gameTime)
@@ -70,7 +84,8 @@ namespace Monogame_4___Sounds_and_Time
             _spriteBatch.Begin();
 
             _spriteBatch.Draw(bombTexture, bombRect, Color.White);
-            _spriteBatch.DrawString(timeFont, seconds.ToString("00.0"), new Vector2(270, 200), Color.Black);
+            // (10 - seconds) will display the timer as counting down from 10
+            _spriteBatch.DrawString(timeFont, (10 - seconds).ToString("00.0"), new Vector2(270, 200), Color.Black); 
             _spriteBatch.End();
 
             base.Draw(gameTime);
