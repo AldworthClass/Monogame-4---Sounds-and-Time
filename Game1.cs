@@ -64,7 +64,7 @@ namespace Monogame_4___Sounds_and_Time
             seconds = (float)gameTime.TotalGameTime.TotalSeconds - startTime;
 
             // Resets bomb timer when the left mouse button is clicked
-            if (mouseState.LeftButton == ButtonState.Pressed) // Takes a timestamp every 10 seconds.  You 
+            if (mouseState.LeftButton == ButtonState.Pressed) 
                 startTime = (float)gameTime.TotalGameTime.TotalSeconds;
 
             // Plays explosion if bomb has not been reset before 10 seconds is up
