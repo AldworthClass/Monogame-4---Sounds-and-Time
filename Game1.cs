@@ -21,7 +21,6 @@ namespace Monogame_4___Sounds_and_Time
         SoundEffect explode;
 
         float seconds;
-        float startTime;
 
         public Game1()
         {
@@ -39,7 +38,8 @@ namespace Monogame_4___Sounds_and_Time
         {
             // TODO: Add your initialization logic here
             bombRect = new Rectangle(50, 50, 700, 400);
-            startTime = 0;
+            //startTime = 0;
+            seconds = 0;
             base.Initialize();
         }
 
@@ -61,20 +61,20 @@ namespace Monogame_4___Sounds_and_Time
                 Exit();
 
             // Calculates elapsed time since the last timestamp
-            seconds = (float)gameTime.TotalGameTime.TotalSeconds - startTime;
+            seconds += (float)gameTime.ElapsedGameTime.TotalSeconds;
 
             // Resets bomb timer when the left mouse button is clicked
-            if (mouseState.LeftButton == ButtonState.Pressed) 
-                startTime = (float)gameTime.TotalGameTime.TotalSeconds;
+            if (mouseState.LeftButton == ButtonState.Pressed)
+                seconds = 0; 
 
             // Plays explosion if bomb has not been reset before 10 seconds is up
             if (seconds >= 10)
             {
                 explode.Play();
-                startTime = (float)gameTime.TotalGameTime.TotalSeconds; // Resets the timer
+                seconds = 0;  // Resets the timer
             }
                 
-                        base.Update(gameTime);
+            base.Update(gameTime);
         }
 
         protected override void Draw(GameTime gameTime)
