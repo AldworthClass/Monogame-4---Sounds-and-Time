@@ -65,13 +65,13 @@ namespace Monogame_4___Sounds_and_Time
 
             // Resets bomb timer when the left mouse button is clicked
             if (mouseState.LeftButton == ButtonState.Pressed)
-                seconds = 0; 
+                seconds = 0f; 
 
             // Plays explosion if bomb has not been reset before 10 seconds is up
             if (seconds >= 10)
             {
                 explode.Play();
-                seconds = 0;  // Resets the timer
+                seconds = 0f;  // Resets the timer
             }
                 
             base.Update(gameTime);
