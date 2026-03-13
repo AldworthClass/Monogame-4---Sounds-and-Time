@@ -19,6 +19,9 @@ namespace Monogame_4___Sounds_and_Time
         Rectangle bombRect;
 
         SoundEffect explode;
+        SoundEffectInstance explodeInstance;
+
+        bool exploded;
 
         float seconds;
 
@@ -40,6 +43,7 @@ namespace Monogame_4___Sounds_and_Time
             bombRect = new Rectangle(50, 50, 700, 400);
             //startTime = 0;
             seconds = 0;
+            exploded = false;
             base.Initialize();
         }
 
@@ -51,6 +55,7 @@ namespace Monogame_4___Sounds_and_Time
             bombTexture = Content.Load<Texture2D>("bomb");
             timeFont = Content.Load<SpriteFont>("Time");
             explode = Content.Load<SoundEffect>("explosion");
+            explodeInstance = explode.CreateInstance();
         }
 
         protected override void Update(GameTime gameTime)
@@ -61,7 +66,8 @@ namespace Monogame_4___Sounds_and_Time
                 Exit();
 
             // Calculates elapsed time since the last timestamp
-            seconds += (float)gameTime.ElapsedGameTime.TotalSeconds;
+            if (!exploded)
+                seconds += (float)gameTime.ElapsedGameTime.TotalSeconds;
 
             // Resets bomb timer when the left mouse button is clicked
             if (mouseState.LeftButton == ButtonState.Pressed)
@@ -70,10 +76,17 @@ namespace Monogame_4___Sounds_and_Time
             // Plays explosion if bomb has not been reset before 10 seconds is up
             if (seconds >= 10)
             {
-                explode.Play();
-                seconds = 0f;  // Resets the timer
+                if (!exploded)
+                {
+                    explodeInstance.Play();
+                    exploded = true;
+                    seconds = 10f;  // Resets the timer
+                }
             }
-                
+
+            if (exploded && explodeInstance.State == SoundState.Stopped)
+                Exit();
+
             base.Update(gameTime);
         }
 
