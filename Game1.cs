@@ -61,7 +61,7 @@ namespace Monogame_4___Sounds_and_Time
         protected override void Update(GameTime gameTime)
         {
             mouseState = Mouse.GetState();
-
+            this.Window.Title = mouseState.Position.ToString();
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
 
